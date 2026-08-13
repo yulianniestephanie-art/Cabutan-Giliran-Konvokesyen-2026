@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎲 Magic Cabutan Nombor 1–37</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  margin-top: 0;
+  opacity: .9;
+}
+
+.card {
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(12px);
+  border-radius: 25px;
+  padding: 30px 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+.number {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #ffe600;
+  text-shadow: 0 4px 10px rgba(0,0,0,.3);
+  min-height: 110px;
+}
+
+.name {
+  background: white;
+  color: #222;
+  border-radius: 18px;
+  padding: 20px 15px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.35;
+  margin: 10px 0 25px;
+}
+
+button {
+  border: none;
+  border-radius: 50px;
+  padding: 16px 35px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 6px;
+  transition: transform .15s, opacity .15s;
+}
+
+button:hover {
+  transform: scale(1.04);
+}
+
+button:active {
+  transform: scale(.96);
+}
+
+.draw {
+  background: #ffe600;
+  color: #222;
+  box-shadow: 0 5px 15px rgba(0,0,0,.25);
+}
+
+.reset {
+  background: #ff4b5c;
+  color: white;
+}
+
+.status {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.history {
+  margin-top: 25px;
+  text-align: left;
+  background: rgba(0,0,0,.15);
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.history h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px,1fr));
+  gap: 8px;
+}
+
+.history-item {
+  background: rgba(255,255,255,.18);
+  padding: 9px;
+  border-radius: 10px;
+  font-size: .9rem;
+}
+
+@keyframes spin {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15) rotate(3deg); }
+  100% { transform: scale(1); }
+}
+
+.spinning {
+  animation: spin .15s infinite;
+}
+
+@media(max-width:500px) {
+  h1 { font-size: 1.7rem; }
+  .number { font-size: 4.5rem; }
+  .name { font-size: 1.15rem; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🎲 MAGIC CABUTAN</h1>
+  <p class="subtitle">Nombor Giliran • 1 – 37</p>
+
+  <div class="card">
+
+    <div id="number" class="number">?</div>
+
+    <div id="name" class="name">
+      Tekan CABUT untuk mula
+    </div>
+
+    <button class="draw" onclick="drawNumber()">
+      🎲 CABUT NOMBOR
+    </button>
+
+    <button class="reset" onclick="resetGame()">
+      🔄 RESET
+    </button>
+
+    <div id="status" class="status">
+      37 nombor masih ada
+    </div>
+
+    <div class="history">
+      <h3>📋 Nombor Yang Telah Dicabut</h3>
+      <div id="historyList" class="history-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+const classes = [
+"TP RPR BANDAR BARU PERMYJAYA DAHLIA",
+"TP RPR BANDAR BARU PERMYJAYA KASTURI",
+"TP RPR BANDAR BARU PERMYJAYA JASMIN",
+"TP RPR BANDAR BARU PERMYJAYA MAWAR",
+"TP RPR BANDAR BARU PERMYJAYA ALLAMANDA",
+"TP RPR BANDAR BARU PERMYJAYA RAFFLESIA",
+"TP RPR BANDAR BARU PERMYJAYA KEMBOJA",
+"TP RPR BANDAR BARU PERMYJAYA KIAMBANG",
+"TP RPR BANDAR BARU PERMYJAYA TERATAI",
+"TP RPR BANDAR BARU PERMYJAYA KEKWA",
+"TP RPR BANDAR BARU PERMYJAYA SELASIH",
+"TP KAMPUNG PANGKALAN LUTONG SEROJA",
+"TP KAMPUNG PANGKALAN LUTONG CEMPAKA",
+"TP DESA SENADIN",
+"TP DESA SENADIN PALMA",
+"TP KAMPUNG PULAU MELAYU",
+"TP RPR BATU 6",
+"TP TUDAN ROS",
+"TP TAMAN BUMIKO MELUR",
+"TP POLIS KOMPLEKS",
+"TP KAMPUNG LOPENG TENGAH",
+"TP KAMPUNG LOPENG TENGAH SIANTAN",
+"TP TAMAN TUNKU TANJUNG",
+"TP TAMAN TUNKU MATAHARI",
+"TP TUDAN RAYA",
+"TP TUDAN LILY",
+"TP TUDAN ANGGERIK",
+"TP KUALA BARAM ALOE VERA",
+"TP KUALA BARAM ORKID",
+"TP HOLIDAY PARK",
+"TP HOLIDAY PARK AKASIA",
+"TP KAMPUNG LUAK",
+"TP PPR SUNGAI RAIT DAISY",
+"TP PPR SUNGAI RAIT KENANGA",
+"TP PPR SUNGAI RAIT BOURGENVILLA",
+"TP BAKAM",
+"TASKA PERPADUAN TAMAN BUMIKO"
+];
+
+let available = [];
+let drawn = [];
+
+function resetGame() {
+  available = classes.map((name, index) => ({
+    number: index + 1,
+    name: name
+  }));
+
+  drawn = [];
+
+  document.getElementById("number").textContent = "?";
+  document.getElementById("name").textContent =
+    "Tekan CABUT untuk mula";
+
+  updateScreen();
+}
+
+function drawNumber() {
+
+  if (available.length === 0) {
+    document.getElementById("name").textContent =
+      "🎉 Semua 37 kelas telah dicabut!";
+    return;
+  }
+
+  const numberEl = document.getElementById("number");
+  const nameEl = document.getElementById("name");
+
+  nameEl.textContent = "🎲 Sedang membuat cabutan...";
+  numberEl.classList.add("spinning");
+
+  let count = 0;
+
+  const animation = setInterval(() => {
+
+    const temp =
+      available[Math.floor(Math.random() * available.length)];
+
+    numberEl.textContent = temp.number;
+
+    count++;
+
+    if (count >= 15) {
+
+      clearInterval(animation);
+      numberEl.classList.remove("spinning");
+
+      const index =
+        Math.floor(Math.random() * available.length);
+
+      const result = available.splice(index, 1)[0];
+
+      drawn.push(result);
+
+      numberEl.textContent = result.number;
+      nameEl.textContent = result.name;
+
+      updateScreen();
+    }
+
+  }, 100);
+}
+
+function updateScreen() {
+
+  document.getElementById("status").textContent =
+    available.length +
+    " nombor masih ada • " +
+    drawn.length +
+    " sudah dicabut";
+
+  const list =
+    document.getElementById("historyList");
+
+  list.innerHTML = "";
+
+  drawn.forEach(item => {
+
+    const div = document.createElement("div");
+
+    div.className = "history-item";
+
+    div.innerHTML =
+      "<strong>No. " +
+      item.number +
+      "</strong><br>" +
+      item.name;
+
+    list.appendChild(div);
+  });
+}
+
+resetGame();
+
+</script>
+
+</body>
+</html>
